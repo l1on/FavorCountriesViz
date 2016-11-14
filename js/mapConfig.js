@@ -14,7 +14,8 @@ AmCharts.makeChart( "mapdiv", {
    */
   "dataProvider": {
     "map": "worldLow",
-    "getAreasFromMap": true
+    "getAreasFromMap": true,
+    "areas": App.countryColors
   },
 
   /**
