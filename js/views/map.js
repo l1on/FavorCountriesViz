@@ -1,4 +1,4 @@
-AmCharts.makeChart( "mapdiv", {
+App.Views.map = AmCharts.makeChart( "mapdiv", {
   /**
    * this tells amCharts it's a map
    */
@@ -15,7 +15,7 @@ AmCharts.makeChart( "mapdiv", {
   "dataProvider": {
     "map": "worldLow",
     "getAreasFromMap": true,
-    "areas": App.countryColors
+    //"areas": App.VizDataGeneration.generateData()
   },
 
   /**
@@ -32,4 +32,4 @@ AmCharts.makeChart( "mapdiv", {
    * let's say we want a small map to be displayed, so let's create it
    */
   //"smallMap": {}
-} );
+});
