@@ -1,4 +1,8 @@
-App.Models.DataRetrieve.getCountryIndicators = function (countryCode) {
+App.Models.DataRetriever = function() {
+	
+}
+
+App.Models.DataRetriever.prototype.getCountryIndicators = function (countryCode) {
 	return {
 		"air-pollution": App.counter++,//getRandomArbitrary(4,4,70.1),
 		"internet-affordability": App.counter++,//getRandomArbitrary(3,1597),

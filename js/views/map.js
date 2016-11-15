@@ -1,4 +1,4 @@
-App.Views.map = AmCharts.makeChart( "mapdiv", {
+App.Views.Map = AmCharts.makeChart("mapdiv", {
   /**
    * this tells amCharts it's a map
    */
