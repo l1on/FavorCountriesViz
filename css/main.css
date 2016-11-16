@@ -1,3 +1,21 @@
 #mapdiv {
-	height: 500px;
+	height: 590px;
+}
+
+
+.knob-group {
+	text-align: center;
+}
+
+.knob-group .btn-primary.active {
+	background-color: #252f38;
+}
+
+.knob-group .btn-primary.active:hover, .knob-group .btn-primary.active.focus  {
+	background-color: #252f38;
+	cursor: default;
+}
+
+.knob-group h6 {
+	margin-bottom: 2px;
 }

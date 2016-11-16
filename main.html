@@ -3,9 +3,12 @@
 	<head>
 		<link rel="stylesheet" href="ammap/ammap.css" type="text/css" media="all" />
 		<link rel="stylesheet" href="css/main.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<script src="js/vendor/jquery-3.1.1.min.js" type="text/javascript"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 		<script src="ammap/ammap.js" type="text/javascript"></script>
 		<script src="ammap/ammap_amcharts_extension.js" type="text/javascript"></script>
-		<script src="ammap/maps/js/worldLow.js" type="text/javascript"></script>
+		<script src="ammap/maps/js/worldLow.js" type="text/javascript"></script>	
 		<script src="js/app.js"></script>
 		<script src="js/models/index.js"></script>	
 		<script src="js/models/data_generator.js"></script>
@@ -15,6 +18,86 @@
 		<script src="js/controllers/index.js"></script>
 	</head>
 	<body>
-		<div id="mapdiv"></div>
+		<div class="container-fluid">
+			<div class="row">
+				<div id="mapdiv" class="col-md-9"></div>
+				<div class="col-md-3">
+					<div class="knob-group">
+						<h6><strong>Pollution</strong></h6>
+						<div class="btn-group btn-group-xs" data-toggle="buttons">
+							<label class="btn btn-primary">
+								<input type="radio" name="pollution-weight" id="0" autocomplete="off">Ignore
+							</label>
+							<label class="btn btn-primary active">
+								<input type="radio" name="pollution-weight" id="1" autocomplete="off" checked>Consider
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" name="pollution-weight" id="2" autocomplete="off">Emphasize
+							</label>
+						</div>
+						<h6><strong>Internet Cost</strong></h6>
+						<div class="btn-group btn-group-xs" data-toggle="buttons">
+							<label class="btn btn-primary">
+								<input type="radio" name="internet-weight" id="0" autocomplete="off">Ignore
+							</label>
+							<label class="btn btn-primary active">
+								<input type="radio" name="internet-weight" id="1" autocomplete="off" checked>Consider
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" name="internet-weight" id="2" autocomplete="off">Emphasize
+							</label>
+						</div>
+						<h6><strong>Meritocracy</strong></h6>
+						<div class="btn-group btn-group-xs" data-toggle="buttons">
+							<label class="btn btn-primary">
+								<input type="radio" name="meritocracy-weight" id="0" autocomplete="off">Ignore
+							</label>
+							<label class="btn btn-primary active">
+								<input type="radio" name="meritocracy-weight" id="1" autocomplete="off" checked>Consider
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" name="meritocracy-weight" id="2" autocomplete="off">Emphasize
+							</label>
+						</div>
+						<h6><strong>Health Expense</strong></h6>
+						<div class="btn-group btn-group-xs" data-toggle="buttons">
+							<label class="btn btn-primary">
+								<input type="radio" name="health-weight" id="0" autocomplete="off">Ignore
+							</label>
+							<label class="btn btn-primary active">
+								<input type="radio" name="health-weight" id="1" autocomplete="off" checked>Consider
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" name="health-weight" id="2" autocomplete="off">Emphasize
+							</label>
+						</div>
+						<h6><strong>Intellectual Capacity</strong></h6>
+						<div class="btn-group btn-group-xs" data-toggle="buttons">
+							<label class="btn btn-primary">
+								<input type="radio" name="intel-weight" id="0" autocomplete="off">Ignore
+							</label>
+							<label class="btn btn-primary active">
+								<input type="radio" name="intel-weight" id="1" autocomplete="off" checked>Consider
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" name="intel-weight" id="2" autocomplete="off">Emphasize
+							</label>
+						</div>
+						<h6><strong>Brain Drain</strong></h6>
+						<div class="btn-group btn-group-xs" data-toggle="buttons">
+							<label class="btn btn-primary">
+								<input type="radio" name="migration-weight" id="0" autocomplete="off">Ignore
+							</label>
+							<label class="btn btn-primary active">
+								<input type="radio" name="migration-weight" id="1" autocomplete="off" checked>Consider
+							</label>
+							<label class="btn btn-primary">
+								<input type="radio" name="migration-weight" id="2" autocomplete="off">Emphasize
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>  		
+		</div>	
 	</body>
 </html>

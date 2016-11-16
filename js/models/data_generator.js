@@ -7,89 +7,89 @@ App.Models.DataGenerator = function() {
 	this.migrationWeight = 1;	
 }
 
-App.Models.DataGenerator.prototype.getCountryColorValue = function (countryCode, dataRetriever) {
-	var k = this.mapIndicatorsToColorValue(dataRetriever.getCountryIndicators(countryCode));
+App.Models.DataGenerator.prototype.getCountryIndex = function (countryCode, dataRetriever) {
+	var k = this.mapIndicatorsToIndex(dataRetriever.getCountryIndicators(countryCode));
 	
 	console.log(countryCode + ": " + k);
 	
 	return k;
 }
 
-App.Models.DataGenerator.prototype.mapIndicatorsToColorValue = function (indicators) {
-	var pollutionColorValue = this.scalePollutionToColorValue(indicators["air-pollution"]);
-	var internetCostColorValue = this.scaleInternetCostToColorValue(indicators["internet-affordability"]);
-	var meritocracyColorValue = this.scaleMeritocracyToColorValue(indicators["meritocracy"]);
-	var healthCostColorValue = this.scaleHealthCostToColorValue(indicators["health-expenditure"]);
-	var intellectualCapacityColorValue = this.scaleIntellectualCapacityToColorValue(indicators["intellectual-capacity"]);
-	var migrationColorValue = this.scaleMigrationToColorValue(indicators["migration"]);
+App.Models.DataGenerator.prototype.mapIndicatorsToIndex = function (indicators) {
+	var pollutionIndex = this.scalePollutionToIndex(indicators["air-pollution"]);
+	var internetCostIndex = this.scaleInternetCostToIndex(indicators["internet-affordability"]);
+	var meritocracyIndex = this.scaleMeritocracyToIndex(indicators["meritocracy"]);
+	var healthCostIndex = this.scaleHealthCostToIndex(indicators["health-expenditure"]);
+	var intellectualCapacityIndex = this.scaleIntellectualCapacityToIndex(indicators["intellectual-capacity"]);
+	var migrationIndex = this.scaleMigrationToIndex(indicators["migration"]);
 
-	return this.getWeightedAvg(pollutionColorValue, internetCostColorValue, meritocracyColorValue, healthCostColorValue, intellectualCapacityColorValue, migrationColorValue);
+	return this.getWeightedAvg(pollutionIndex, internetCostIndex, meritocracyIndex, healthCostIndex, intellectualCapacityIndex, migrationIndex);
 }
 
-App.Models.DataGenerator.prototype.scalePollutionToColorValue = function (pollutionValue) {
+App.Models.DataGenerator.prototype.scalePollutionToIndex = function (pollutionValue) {
 	var min = 15.6 // high income avg
 	var max = 54.4 // China avg
 	
 	// Reverse because the lower, the better
-	return 255 - this.scaleToRgbRange(pollutionValue, min, max);
+	return 99 - this.scaleToIndex(pollutionValue, min, max);
 }
 
-App.Models.DataGenerator.prototype.scaleInternetCostToColorValue = function (internetCost) {
+App.Models.DataGenerator.prototype.scaleInternetCostToIndex = function (internetCost) {
 	var min = 27 // high income avg
 	var max = 45 // low income avg
 	
 	// Reverse because the lower, the better
-	return 255 - this.scaleToRgbRange(internetCost, min, max);
+	return 99 - this.scaleToIndex(internetCost, min, max);
 }
 
-App.Models.DataGenerator.prototype.scaleMeritocracyToColorValue = function (meritocracy) {
+App.Models.DataGenerator.prototype.scaleMeritocracyToIndex = function (meritocracy) {
 	var min = 5 //raw lowest num
 	var max = 53 // raw highest num
 	
-	return this.scaleToRgbRange(meritocracy, min, max);
+	return this.scaleToIndex(meritocracy, min, max);
 }
 
-App.Models.DataGenerator.prototype.scaleHealthCostToColorValue = function (healthCost) {
+App.Models.DataGenerator.prototype.scaleHealthCostToIndex = function (healthCost) {
 	var min = 13.3 // high income avg
 	var max = 55.7 // lower middle income avg
 	
 	// Reverse because the lower, the better
-	return 255 - this.scaleToRgbRange(healthCost, min, max);
+	return 99 - this.scaleToIndex(healthCost, min, max);
 }
 
-App.Models.DataGenerator.prototype.scaleIntellectualCapacityToColorValue = function (intelCap) {
+App.Models.DataGenerator.prototype.scaleIntellectualCapacityToIndex = function (intelCap) {
 	var min = 156 // south asia
 	var max = 4080 // north america
 	
-	return this.scaleToRgbRange(intelCap, min, max);
+	return this.scaleToIndex(intelCap, min, max);
 }
 
-App.Models.DataGenerator.prototype.scaleMigrationToColorValue = function (migration) {
+App.Models.DataGenerator.prototype.scaleMigrationToIndex = function (migration) {
 	var min = 3.9 // high income avg
 	var max = 19.2 // low income avg
 	
 	// Reverse because the lower, the better
-	return 255 - this.scaleToRgbRange(migration, min, max);
+	return 99 - this.scaleToIndex(migration, min, max);
 }
 
-App.Models.DataGenerator.prototype.scaleToRgbRange = function(value, min, max) {
-	var rgbValue = (value - min) * 255 / (max - min);
+App.Models.DataGenerator.prototype.scaleToIndex = function(value, min, max) {
+	var index = (value - min) * 99 / (max - min);
 	
 	// Adjustments to make given some countries' data will be out of the choosen [min, max] range
-	if (rgbValue < 0) rgbValue = 0;
-	if (rgbValue > 255) rgbValue = 255;
+	if (index < 0) index = 0;
+	if (index > 99) index = 99;
 	
-	return rgbValue;
+	return index;
 }
 
-App.Models.DataGenerator.prototype.getWeightedAvg = function(pollutionColorValue, internetCostColorValue, meritocracyColorValue, healthCostColorValue, intellectualCapacityColorValue, migrationColorValue) {
-	return Math.round((
-		pollutionColorValue * this.pollutionWeight + 
-		internetCostColorValue * this.internetWeight +
-		meritocracyColorValue * this.meritocracyWeight + 
-		healthCostColorValue * this.healthWeight +
-		intellectualCapacityColorValue * this.intelWeight +
-		migrationColorValue * this.migrationWeight
+App.Models.DataGenerator.prototype.getWeightedAvg = function(pollutionIndex, internetCostIndex, meritocracyIndex, healthCostIndex, intellectualCapacityIndex, migrationIndex) {
+	return (
+		pollutionIndex * this.pollutionWeight + 
+		internetCostIndex * this.internetWeight +
+		meritocracyIndex * this.meritocracyWeight + 
+		healthCostIndex * this.healthWeight +
+		intellectualCapacityIndex * this.intelWeight +
+		migrationIndex * this.migrationWeight
 		) / (
 		this.pollutionWeight + 
 		this.internetWeight + 
@@ -97,16 +97,26 @@ App.Models.DataGenerator.prototype.getWeightedAvg = function(pollutionColorValue
 		this.healthWeight +
 		this.intelWeight +
 		this.migrationWeight
-	)); 
+	);
 }
 
 App.Models.DataGenerator.prototype.generateData = function(dataRetriever) {
-	App.counter = 0;
-	
 	return AmCharts.maps.worldLow.svg.g.path.map(function(country){
 		return {
 			"id": country.id,
-			"color": "rgb(0," + this.getCountryColorValue(country.id, dataRetriever) + ",0)"
+			"index": this.getCountryIndex(country.id, dataRetriever)
 		};
 	}, this);
+}
+
+App.Models.DataGenerator.prototype.ignoreWeight = function(weight) {
+	this[weight + "Weight"] = 0;
+}
+
+App.Models.DataGenerator.prototype.considerWeight = function(weight) {
+	this[weight + "Weight"] = 1;
+}
+
+App.Models.DataGenerator.prototype.emphasizeWeight = function(weight) {
+	this[weight + "Weight"] = 2;
 }
