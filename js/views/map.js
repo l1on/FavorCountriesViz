@@ -28,6 +28,7 @@ App.Views.Map = function() {
       "selectedColor": "#CC0000"
     },
   });
+
 }
 
 App.Views.Map.prototype.draw = function(countryData) {
@@ -38,7 +39,13 @@ App.Views.Map.prototype.draw = function(countryData) {
     }
   }, this);
 
-  this.map.validateData(); 
+  var prevZoomLvl = this.map.zoomLevel();
+  var prevZoomX = this.map.zoomX();
+  var prevZoomY = this.map.zoomY();
+  
+  this.map.validateData();
+
+  this.map.zoomTo(prevZoomLvl, prevZoomX, prevZoomY, true); 
 };
 
 App.Views.Map.prototype.scaleToRGB = function(value) {

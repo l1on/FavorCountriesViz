@@ -10,7 +10,7 @@ App.Models.DataGenerator = function() {
 App.Models.DataGenerator.prototype.getCountryIndex = function (countryCode, dataRetriever) {
 	var k = this.mapIndicatorsToIndex(dataRetriever.getCountryIndicators(countryCode));
 	
-	console.log(countryCode + ": " + k);
+	//console.log(countryCode + ": " + k);
 	
 	return k;
 }
