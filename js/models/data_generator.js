@@ -1,10 +1,10 @@
 App.Models.DataGenerator = function() {
-	this.pollutionWeight = 1;
-	this.internetWeight = 1;
-	this.meritocracyWeight = 1;
-	this.healthWeight = 1;
-	this.intelWeight = 1;
-	this.migrationWeight = 1;	
+	this.pollutionWeight = 100;
+	this.internetWeight = 100;
+	this.meritocracyWeight = 100;
+	this.healthWeight = 100;
+	this.intelWeight = 100;
+	this.migrationWeight = 100;	
 }
 
 App.Models.DataGenerator.prototype.getCountryIndex = function (countryCode, dataRetriever) {
@@ -109,14 +109,6 @@ App.Models.DataGenerator.prototype.generateData = function(dataRetriever) {
 	}, this);
 }
 
-App.Models.DataGenerator.prototype.ignoreWeight = function(weight) {
-	this[weight + "Weight"] = 0;
-}
-
-App.Models.DataGenerator.prototype.considerWeight = function(weight) {
-	this[weight + "Weight"] = 1;
-}
-
-App.Models.DataGenerator.prototype.emphasizeWeight = function(weight) {
-	this[weight + "Weight"] = 2;
+App.Models.DataGenerator.prototype.setWeight = function(weight, value) {
+	this[weight + "Weight"] = value;
 }

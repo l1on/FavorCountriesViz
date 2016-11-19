@@ -1,10 +1,27 @@
-#mapdiv {
-	height: 590px;
+html, body, .container-fluid, .row, div[class^="col-"]{
+ 	height:100%;
 }
 
+#chartdiv {
+	height: 50%;
+}
 
 .knob-group {
+	height: 50%;
 	text-align: center;
+}
+
+.knob-group .slider.slider-horizontal{
+	width: 75%;
+}
+
+.knob-group .headline{
+	font-size: 115%;
+}
+
+.knob-group .weight-range-texts {
+	font-size: 80%;
+	padding-top: 5px;
 }
 
 .knob-group .btn-primary.active {

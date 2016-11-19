@@ -25,8 +25,16 @@ App.Views.Map = function() {
      */
     "areasSettings": {
       "autoZoom": true,
-      "selectedColor": "#CC0000"
+      "selectedColor": "#CC0000",
+      "color": "rgb(0,0,64)",
+      "colorSolid": "rgb(0,255,64)"
     },
+
+    "valueLegend": {
+      "showAsGradient": true,
+      "minValue": "least desirable",
+      "maxValue": "most desirable"
+    }
   });
 
 }
@@ -44,6 +52,7 @@ App.Views.Map.prototype.draw = function(countryData) {
   var prevZoomY = this.map.zoomY();
   
   this.map.validateData();
+  $('a[href^="http://www.amcharts.com/"]').remove();
 
   this.map.zoomTo(prevZoomLvl, prevZoomX, prevZoomY, true); 
 };
