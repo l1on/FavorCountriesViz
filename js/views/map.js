@@ -15,7 +15,9 @@ App.Views.Map = function() {
      */
     "dataProvider": {
       "map": "worldLow",
-      "getAreasFromMap": true
+      "getAreasFromMap": true,
+
+      //"descriptionWindowTop": 0
     },
 
     /**
@@ -34,18 +36,25 @@ App.Views.Map = function() {
       "showAsGradient": true,
       "minValue": "least desirable",
       "maxValue": "most desirable"
-    }
+    },
+
   });
 
 }
 
-App.Views.Map.prototype.draw = function(countryData) {
-  this.map.dataProvider.areas = countryData.map(function(country){
-    return {
-      "id": country.id,
-      "color": "rgb(0," + this.scaleToRGB(country.index) + ",64)"
-    }
-  }, this);
+App.Views.Map.prototype.draw = function(countryIndices) {
+  var self = this;
+
+  self.map.dataProvider.areas = [];
+  countryIndices.iterate(function(key, value){
+    self.map.dataProvider.areas.push({
+      "id": key,
+      "color": "rgb(0," + self.scaleIndexToRGB(value.index) + ",64)",
+      "description": "dfasfd",
+      "descriptionWindowRight": 15,
+      "descriptionWindowTop": 5,
+    });
+  });
 
   var prevZoomLvl = this.map.zoomLevel();
   var prevZoomX = this.map.zoomX();
@@ -57,7 +66,7 @@ App.Views.Map.prototype.draw = function(countryData) {
   this.map.zoomTo(prevZoomLvl, prevZoomX, prevZoomY, true); 
 };
 
-App.Views.Map.prototype.scaleToRGB = function(value) {
+App.Views.Map.prototype.scaleIndexToRGB = function(value) {
   return Math.round(value * 255 / 99);
 }
 
