@@ -10,8 +10,6 @@ function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-App.i = 0;
-
 App.tempCountryData = webStorage.createInstance({
     name: 'tempData'
 });	

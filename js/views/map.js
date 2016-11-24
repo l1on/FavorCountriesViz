@@ -42,15 +42,22 @@ App.Views.Map = function() {
 
 }
 
-App.Views.Map.prototype.draw = function(countryIndices) {
+App.Views.Map.prototype.draw = function(countryIndices, countryIndicators) {
   var self = this;
 
   self.map.dataProvider.areas = [];
-  countryIndices.iterate(function(key, value){
+  countryIndices.iterate(function(countryId, value){
+    var indicators = countryIndicators.getItem(countryId);
+
     self.map.dataProvider.areas.push({
-      "id": key,
+      "id": countryId,
       "color": "rgb(0," + self.scaleIndexToRGB(value.index) + ",64)",
-      "description": "dfasfd",
+      "description": "air: " + indicators["air-pollution"] + "<br />" + 
+                      "internet: " + indicators["internet-affordability"] + "<br />" +
+                      "meritocracy: " + indicators["meritocracy"] + "<br />" +
+                      "health cost: " + indicators["health-expenditure"] + "<br />" +
+                      "intellectual: " + indicators["intellectual-capacity"] + "<br />" +
+                      "migration: " + indicators["migration"] + "<br />",
       "descriptionWindowRight": 15,
       "descriptionWindowTop": 5,
     });
