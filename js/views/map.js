@@ -15,7 +15,7 @@ App.Views.Map = function() {
      */
     "dataProvider": {
       "map": "worldLow",
-      "getAreasFromMap": true,
+      //"getAreasFromMap": true,
 
       //"descriptionWindowTop": 0
     },
@@ -27,9 +27,21 @@ App.Views.Map = function() {
      */
     "areasSettings": {
       "autoZoom": true,
-      "selectedColor": "#CC0000",
-      "color": "rgb(0,0,64)",
-      "colorSolid": "rgb(0,255,64)"
+      "selectedColor": "#5EB7DE",
+      //"color": "rgb(0,0,255)", // blue -> green
+      //"colorSolid": "rgb(0,255,0)", // blue -> green
+
+      //"color": "rgb(255,0,0)", // red -> blue
+      //"colorSolid": "rgb(0,0,255)",// red -> blue
+
+      //"color": "rgb(0,0,64)", // dark -> green
+      //"colorSolid": "rgb(0,255,64)",// dark -> green
+
+      "color": "rgb(255,0,0)", // red -> green
+      "colorSolid": "rgb(0,255,0)",// red -> green
+
+      //"color": "rgb(255,255,255)", // white -> green
+      //"colorSolid": "rgb(0,255,0)",// white -> green
     },
 
     "valueLegend": {
@@ -51,13 +63,17 @@ App.Views.Map.prototype.draw = function(countryIndices, countryIndicators) {
 
     self.map.dataProvider.areas.push({
       "id": countryId,
-      "color": "rgb(0," + self.scaleIndexToRGB(value.index) + ",64)",
-      "description": "air: " + indicators["air-pollution"] + "<br />" + 
-                      "internet: " + indicators["internet-affordability"] + "<br />" +
-                      "meritocracy: " + indicators["meritocracy"] + "<br />" +
-                      "health cost: " + indicators["health-expenditure"] + "<br />" +
-                      "intellectual: " + indicators["intellectual-capacity"] + "<br />" +
-                      "migration: " + indicators["migration"] + "<br />",
+      //"color": "rgba(0, " + self.scaleIndexToRGB(value.index) + ", " + (255 - self.scaleIndexToRGB(value.index)) + ", 1)", // blue -> green
+      //"color": "rgba(" + (255 - self.scaleIndexToRGB(value.index)) + ", 0, " + self.scaleIndexToRGB(value.index) + ", 1)", // red - > blue
+      //"color": "rgba(0," + self.scaleIndexToRGB(value.index) + ",64, 1)", // dark -> green
+      "color": "rgba(" + (255 - self.scaleIndexToRGB(value.index)) + "," + self.scaleIndexToRGB(value.index) + ",0, 1)", // red -> green
+      //"color": "rgba(" + (255 - self.scaleIndexToRGB(value.index)) + ", 255," + (255 - self.scaleIndexToRGB(value.index)) + ", 1)", // white -> green
+      "description":  "<p><abbr title='micrograms per cubic meter of daily exposure, 2015'>Ambient PM2.5 Air Pollution</abbr>: " + self.decimalOrNull(indicators["air-pollution"], 1) + "</p>" + 
+                      "<p><abbr title='USD per month, 2013'>Internet Affordability</abbr>: " + self.decimalOrNull(indicators["internet-affordability"], 0) + "</p>" +
+                      "<p><abbr title='% of total, 2002-2014'>Female Legislators, Senior Officials, and Managers</abbr>: " + self.decimalOrNull(indicators["meritocracy"], 0) + "</p>" +
+                      "<p><abbr title='% of total, 2014'>Out of Pocket Health Expenditure</abbr>: " + self.decimalOrNull(indicators["health-expenditure"], 1) + "</p>" +
+                      "<p><abbr title='full-time equivalent per million people, 2005-2015'>Researchers</abbr>: " + self.decimalOrNull(indicators["intellectual-capacity"], 0) + "</p>" +
+                      "<p><abbr title='% of tertiary educated population age 25+, 2000'>Emigration rate of tertiary educated to OECD countries </abbr>: " + self.decimalOrNull(indicators["migration"], 1) + "</p>",
       "descriptionWindowRight": 15,
       "descriptionWindowTop": 5,
     });
@@ -75,5 +91,12 @@ App.Views.Map.prototype.draw = function(countryIndices, countryIndicators) {
 
 App.Views.Map.prototype.scaleIndexToRGB = function(value) {
   return Math.round(value * 255 / 99);
+}
+
+App.Views.Map.prototype.decimalOrNull = function(value, decimal) {
+  if (value == null) return "NO DATA";
+  
+  return value.toFixed(decimal);
+  
 }
 

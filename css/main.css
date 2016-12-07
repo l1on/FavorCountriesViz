@@ -34,5 +34,5 @@ html, body, .container-fluid, .row, div[class^="col-"]{
 }
 
 .knob-group h6 {
-	margin-bottom: 2px;
+	margin-bottom: 5px;
 }

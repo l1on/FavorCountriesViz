@@ -11,71 +11,105 @@ App.Models.IndexGenerator = function() {
 	});	
 }
 
-App.Models.IndexGenerator.prototype.getCountryIndex = function (countryCode, indicatorStore) {	
-	var indicators = indicatorStore.data.getItem(countryCode);
+App.Models.IndexGenerator.prototype.generateIndividualIndices = function (indicatorStore) {	
+	var self = this;
 
-	var pollutionIndex = this.scalePollutionToIndex(indicators["air-pollution"]);
-	var internetCostIndex = this.scaleInternetCostToIndex(indicators["internet-affordability"]);
-	var meritocracyIndex = this.scaleMeritocracyToIndex(indicators["meritocracy"]);
-	var healthCostIndex = this.scaleHealthCostToIndex(indicators["health-expenditure"]);
-	var intellectualCapacityIndex = this.scaleIntellectualCapacityToIndex(indicators["intellectual-capacity"]);
-	var migrationIndex = this.scaleMigrationToIndex(indicators["migration"]);
-
-	return this.getWeightedAvg(pollutionIndex, internetCostIndex, meritocracyIndex, healthCostIndex, intellectualCapacityIndex, migrationIndex);
+	indicatorStore.data.iterate(function(countryId, indicators){
+		self.indexStore.setItem(countryId, {
+			"indexInternet": self.scaleInternetCostToIndex(indicators["internet-affordability"]),
+			"indexAir": self.scalePollutionToIndex(indicators["air-pollution"]),
+			"indexMeritocracy": self.scaleMeritocracyToIndex(indicators["meritocracy"]),
+			"indexHealth": self.scaleHealthCostToIndex(indicators["health-expenditure"]),
+			"indexIntel": self.scaleIntellectualCapacityToIndex(indicators["intellectual-capacity"]),
+			"indexMigration": self.scaleMigrationToIndex(indicators["migration"])
+		});
+	});
 }
 
-App.Models.IndexGenerator.prototype.mapIndicatorsToIndex = function (indicators) {
-	var pollutionIndex = this.scalePollutionToIndex(indicators["air-pollution"]);
-	var internetCostIndex = this.scaleInternetCostToIndex(indicators["internet-affordability"]);
-	var meritocracyIndex = this.scaleMeritocracyToIndex(indicators["meritocracy"]);
-	var healthCostIndex = this.scaleHealthCostToIndex(indicators["health-expenditure"]);
-	var intellectualCapacityIndex = this.scaleIntellectualCapacityToIndex(indicators["intellectual-capacity"]);
-	var migrationIndex = this.scaleMigrationToIndex(indicators["migration"]);
-
-	return this.getWeightedAvg(pollutionIndex, internetCostIndex, meritocracyIndex, healthCostIndex, intellectualCapacityIndex, migrationIndex);
-}
 
 App.Models.IndexGenerator.prototype.scalePollutionToIndex = function (pollutionValue) {
-	var min = 15.6 // high income avg
-	var max = 54.4 // China avg
+	if (pollutionValue == null) return 0;
+
+	// Mean: 25.416
+	// SD: 18.269
+	// Z = |value - Mean| / SD
+	// min = min(data) whose Z is <= 1
+	// max = max(data) whose Z is <= 1
+	var min = 7.2  
+	var max = 43.2
 	
 	// Reverse because the lower, the better
 	return 99 - this.scaleToIndex(pollutionValue, min, max);
 }
 
 App.Models.IndexGenerator.prototype.scaleInternetCostToIndex = function (internetCost) {
-	var min = 27 // high income avg
-	var max = 45 // low income avg
+	if (internetCost == null) return 0;
+
+	// Mean: 56.40
+	// SD: 143.53
+	// Z = |value - Mean| / SD
+	// min = min(data) whose Z is <= 1
+	// max = max(data) whose Z is <= 1
+	var min = 3 
+	var max = 108
 	
 	// Reverse because the lower, the better
 	return 99 - this.scaleToIndex(internetCost, min, max);
 }
 
 App.Models.IndexGenerator.prototype.scaleMeritocracyToIndex = function (meritocracy) {
-	var min = 5 //raw lowest num
-	var max = 53 // raw highest num
+	if (meritocracy == null) return 0;
+
+	// Mean: 30.51
+	// SD: 11.47
+	// Z = |value - Mean| / SD
+	// min = min(data) whose Z is <= 1
+	// max = max(data) whose Z is <= 1
+	var min = 22
+	var max = 40
 	
 	return this.scaleToIndex(meritocracy, min, max);
 }
 
 App.Models.IndexGenerator.prototype.scaleHealthCostToIndex = function (healthCost) {
-	var min = 13.3 // high income avg
-	var max = 55.7 // lower middle income avg
+	if (healthCost == null) return 0;
+
+	// Mean: 30.775
+	// SD: 17.659
+	// Z = |value - Mean| / SD
+	// min = min(data) whose Z is <= 1
+	// max = max(data) whose Z is <= 1
+	var min = 13.2 
+	var max = 48.4
 	
 	// Reverse because the lower, the better
 	return 99 - this.scaleToIndex(healthCost, min, max);
 }
 
 App.Models.IndexGenerator.prototype.scaleIntellectualCapacityToIndex = function (intelCap) {
-	var min = 156 // south asia
-	var max = 4080 // north america
+	if (intelCap == null) return 0;
+
+	// Mean: 1676.48
+	// SD: 2074.06
+	// Z = |value - Mean| / SD
+	// min = min(data) whose Z is <= 1
+	// max = max(data) whose Z is <= 1
+	var min = 6 
+	var max = 3732 
 	
 	return this.scaleToIndex(intelCap, min, max);
 }
 
 App.Models.IndexGenerator.prototype.scaleMigrationToIndex = function (migration) {
-	var min = 3.9 // high income avg
-	var max = 19.2 // low income avg
+	if (migration == null) return 0;
+
+	// Mean: 1676.48
+	// SD: 2074.06
+	// Z = |value - Mean| / SD
+	// min = min(data) whose Z is < = 1
+	// max = max(data) whose Z is < = 1
+	var min = 0.4 
+	var max = 42.8
 	
 	// Reverse because the lower, the better
 	return 99 - this.scaleToIndex(migration, min, max);
@@ -91,7 +125,7 @@ App.Models.IndexGenerator.prototype.scaleToIndex = function(value, min, max) {
 	return index;
 }
 
-App.Models.IndexGenerator.prototype.getWeightedAvg = function(pollutionIndex, internetCostIndex, meritocracyIndex, healthCostIndex, intellectualCapacityIndex, migrationIndex) {
+App.Models.IndexGenerator.prototype.getCountryIndex = function(pollutionIndex, internetCostIndex, meritocracyIndex, healthCostIndex, intellectualCapacityIndex, migrationIndex) {
 	return (
 		pollutionIndex * this.pollutionWeight + 
 		internetCostIndex * this.internetWeight +
@@ -112,10 +146,9 @@ App.Models.IndexGenerator.prototype.getWeightedAvg = function(pollutionIndex, in
 App.Models.IndexGenerator.prototype.generateIndices = function(indicatorStore) {
 	var self = this;
 
-	indicatorStore.data.iterate(function(countryId){
-		self.indexStore.setItem(countryId, {
-			"index": self.getCountryIndex(countryId, indicatorStore)
-		});
+	self.indexStore.iterate(function(countryId, value){
+		value["index"] = self.getCountryIndex(value["indexAir"], value["indexInternet"], value["indexMeritocracy"], value["indexHealth"], value["indexIntel"], value["indexMigration"]);
+		self.indexStore.setItem(countryId, value);
 	});
 }
 

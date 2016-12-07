@@ -1,24 +1,56 @@
 App.Controller = {};
 
-
-
 App.Controller = function () {
-	this.indexGenerator = new App.Models.IndexGenerator();
 	this.indicatorStore = new App.Models.IndicatorStore();
-	this.map = new App.Views.Map();
+	this.indexGenerator = new App.Models.IndexGenerator();
+	this.mapView = new App.Views.Map();
 	this.comparisonChart = new App.Views.ComparisonChart();
 }
 
 App.Controller.prototype.init = function() {
 	this.setupKnobs();
+	this.setupMapChartInteraction();
 
+	this.indexGenerator.generateIndividualIndices(this.indicatorStore);
 	this.indexGenerator.generateIndices(this.indicatorStore);
 	this.drawMap();
+	
 }
 
 App.Controller.prototype.drawMap = function () {
-	this.map.draw(this.indexGenerator.indexStore, this.indicatorStore.data);
+	this.mapView.draw(this.indexGenerator.indexStore, this.indicatorStore.data);
 }
+
+App.Controller.prototype.setupMapChartInteraction = function() {
+	this.mapView.map.addListener("clickMapObject", $.proxy((function(event) {
+		var titles = [];
+		var indice = [];
+
+		if(event.event.altKey) {
+			event.mapObject.showAsSelected = !event.mapObject.showAsSelected;
+			this.mapView.map.returnInitialColor(event.mapObject);
+			
+			this.mapView.map.dataProvider.areas.forEach(function(area){
+				if (area.showAsSelected) {
+					titles.push(area.title);
+					indice.push(this.indexGenerator.indexStore.getItem(area.id));
+				}
+			}, this);
+		} else {
+			this.mapView.map.dataProvider.areas.forEach(function(area){
+				if (area.showAsSelected && area.id != event.mapObject.id) {
+					area.showAsSelected = false;
+					this.mapView.map.returnInitialColor(area);
+				}
+			}, this);
+
+			titles.push(event.mapObject.title);
+			indice.push(this.indexGenerator.indexStore.getItem(event.mapObject.id));
+		}
+
+		this.comparisonChart.update(titles, indice);
+	}), this));
+};
 
 App.Controller.prototype.setupKnobs = function () {
 	var self = this;
@@ -31,6 +63,8 @@ App.Controller.prototype.setupKnobs = function () {
 		
 		self.indexGenerator.generateIndices(self.indicatorStore);
 		self.drawMap();
+
+		self.comparisonChart.update([],[]);
 	});
 }
 
