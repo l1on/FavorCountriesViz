@@ -3,11 +3,11 @@ html, body, .container-fluid, .row, div[class^="col-"]{
 }
 
 #chartdiv {
-	height: 50%;
+	//height: 50%;
 }
 
 .knob-group {
-	height: 50%;
+	//height: 50%;
 	text-align: center;
 }
 
